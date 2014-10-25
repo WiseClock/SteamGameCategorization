@@ -1,7 +1,7 @@
-﻿using LittleToolLib.Media;
-using SteamGameCategorization.Util;
+﻿using SteamGameCategorization.Util;
 using System;
 using System.Windows.Forms;
+using WiseClockie.Media;
 
 namespace SteamGameCategorization
 {
@@ -14,7 +14,7 @@ namespace SteamGameCategorization
 
         private void SteamGameCategorization_Load(object sender, EventArgs e)
         {
-            MidiPlayer.Play(MidiFile.Nyancat, true);
+            WiseSoundPlayer.Play(WiseMidiFile.Nyancat, true);
             string filePath = @"D:\CODE\VISUAL STUDIO\Projects\SteamGameCategorization\sharedconfig.vdf";
 
             System.IO.StreamReader file = new System.IO.StreamReader(filePath);
