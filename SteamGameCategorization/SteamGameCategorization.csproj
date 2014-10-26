@@ -32,14 +32,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="WiseClockie">
       <HintPath>lib\WiseClockie.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonStruct\App.cs" />
+    <Compile Include="JsonStruct\AppData.cs" />
     <Compile Include="SteamGameCategorization.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -48,11 +56,23 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SteamPathDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SteamPathDialog.Designer.cs">
+      <DependentUpon>SteamPathDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\VDF.cs" />
     <Compile Include="Util\VDFParser.cs" />
     <Compile Include="Util\VDFPrinter.cs" />
     <Compile Include="Util\VDFValue.cs" />
     <Compile Include="Util\VDFValues.cs" />
+    <Compile Include="WaitingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WaitingDialog.Designer.cs">
+      <DependentUpon>WaitingDialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -64,6 +84,12 @@
     </Compile>
     <EmbeddedResource Include="SteamGameCategorization.resx">
       <DependentUpon>SteamGameCategorization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SteamPathDialog.resx">
+      <DependentUpon>SteamPathDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WaitingDialog.resx">
+      <DependentUpon>WaitingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
