@@ -65,16 +65,16 @@ namespace SteamGameCategorization
 
             steamAppVDF = steamVDF.GetKey("UserRoamingConfigStore").GetKey("Software").GetKey("Valve").GetKey("Steam").GetKey("apps");
 
-            // VDFPrinter.printUserRoamingConfigStore(vdfObject);
+            // Console.WriteLine(steamAppVDF);
             makeTreeView(steamAppVDF);
 
-            if (File.Exists(Application.StartupPath + "\\data.xml"))
+            if (File.Exists(Application.StartupPath + "\\GameData.steam"))
             {
-                apps = Deserialize<Dictionary<string, App>>("data.xml");
+                apps = Deserialize<Dictionary<string, App>>("GameData.steam");
             }
             else
             {
-                Serialize(apps, "data.xml");
+                Serialize(apps, "GameData.steam");
             }
 
             this.Shown += new System.EventHandler(this.fetchSteamDataStart);
@@ -200,7 +200,7 @@ namespace SteamGameCategorization
 
             try
             {
-                Serialize(apps, "data.xml");
+                Serialize(apps, "GameData.steam");
             }
             catch (Exception ex)
             {
