@@ -97,6 +97,44 @@ namespace SteamGameCategorization
                 Serialize(apps, "GameData.steam");
             }
 
+            /*
+            Dictionary<string, string> cate = new Dictionary<string, string>();
+            Dictionary<string, string> genre = new Dictionary<string, string>();
+            foreach (App app in apps.Values)
+            {
+                if (app.success == true)
+                {
+                    AppData data = app.data;
+                    if (data.categories != null)
+                    {
+                        foreach (IdDescriptionPair pair in data.categories)
+                        {
+                            if (!cate.ContainsKey(pair.id))
+                                cate.Add(pair.id, pair.description);
+                        }
+                    }
+                    if (data.genres != null)
+                    {
+                        foreach (IdDescriptionPair pair in data.genres)
+                        {
+                            if (!genre.ContainsKey(pair.id))
+                                genre.Add(pair.id, pair.description);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Cate:\n");
+            foreach (var pair in cate)
+            {
+                Console.WriteLine(pair.Key + ": " + pair.Value);
+            }
+            Console.WriteLine("\nGenre:\n");
+            foreach (var pair in genre)
+            {
+                Console.WriteLine(pair.Key + ": " + pair.Value);
+            }
+            */
+
             //var ownedGames = getOwnedGames("WiseClock");
             //if (ownedGames.ContainsKey("ERROR"))
             //{

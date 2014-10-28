@@ -50,6 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category\Category.cs" />
+    <Compile Include="Category\Genre.cs" />
     <Compile Include="JsonStruct\App.cs" />
     <Compile Include="JsonStruct\AppData.cs" />
     <Compile Include="SteamGameCategorization.cs">
