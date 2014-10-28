@@ -14,6 +14,8 @@ using WiseClockie.Media;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using HtmlAgilityPack;
 
 namespace SteamGameCategorization
 {
@@ -75,6 +77,16 @@ namespace SteamGameCategorization
             else
             {
                 Serialize(apps, "GameData.steam");
+            }
+
+            var ownedGames = getOwnedGames("WiseClock");
+            if (ownedGames.ContainsKey("ERROR"))
+            {
+                Console.WriteLine(ownedGames["ERROR"][0]);
+            }
+            else
+            {
+                Console.WriteLine(ownedGames["APP"][0]);
             }
 
             this.Shown += new System.EventHandler(this.fetchSteamDataStart);
@@ -261,9 +273,49 @@ namespace SteamGameCategorization
         private void btnSteamPath_Click(object sender, EventArgs e)
         {
 
-
-            WaitingDialog wd = new WaitingDialog();
-            wd.ShowDialog();
         }
+
+        private Dictionary<string, List<string>> getOwnedGames(string steamID)
+        {
+            Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
+
+            string url = "https://steamdb.info/calculator/?player=" + steamID + "&currency=us";
+            var Webget = new HtmlWeb();
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            try
+            {
+                doc = Webget.Load(url);
+
+                try
+                {
+                    List<string> appIDList = new List<string>();
+                    var appIDs = doc.GetElementbyId("table-apps").SelectNodes("//tbody//tr//td//a");
+                    foreach (var appID in appIDs)
+                    {
+                        appIDList.Add(appID.InnerHtml);
+                    }
+                    result.Add("APP", appIDList);
+                }
+                catch (NullReferenceException)
+                {
+                    try
+                    {
+                        var error = doc.DocumentNode.SelectNodes("//div[contains(@class, 'panel-error-calculator')]//p");
+                        result.Add("ERROR", new List<string> { error[0].InnerHtml });
+                    }
+                    catch (NullReferenceException)
+                    {
+                        result.Add("ERROR", new List<string> { "网络有问题……" });
+                    }
+                }
+            }
+            catch (WebException)
+            {
+                result.Add("ERROR", new List<string> { "网络有问题……" });
+            }
+            
+            return result;
+        }
+
     }
 }
