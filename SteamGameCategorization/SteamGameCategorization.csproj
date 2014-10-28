@@ -60,6 +60,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SteamProfileSelectorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SteamProfileSelectorDialog.Designer.cs">
+      <DependentUpon>SteamProfileSelectorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\SteamDB.cs" />
     <Compile Include="Util\VDF.cs" />
     <Compile Include="Util\VDFParser.cs" />
     <Compile Include="Util\VDFValue.cs" />
@@ -82,6 +89,9 @@
     </Compile>
     <EmbeddedResource Include="SteamGameCategorization.resx">
       <DependentUpon>SteamGameCategorization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SteamProfileSelectorDialog.resx">
+      <DependentUpon>SteamProfileSelectorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WaitingDialog.resx">
       <DependentUpon>WaitingDialog.cs</DependentUpon>

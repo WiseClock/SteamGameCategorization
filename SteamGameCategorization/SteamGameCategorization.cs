@@ -38,7 +38,8 @@ namespace SteamGameCategorization
         {
             // WiseSoundPlayer.Play(WiseMidiFile.Nyancat, true);
 
-            /*
+            string steamPath = null;
+            string steamProfile = null;
             RegistryKey regKey = Registry.CurrentUser;
             regKey = regKey.OpenSubKey(@"Software\Valve\Steam");
 
@@ -50,13 +51,31 @@ namespace SteamGameCategorization
 
             if (steamPath != null && steamPath.Length > 0)
             {
-                SteamPathDialog steamPathDialog = new SteamPathDialog();
-                steamPathDialog.path.Text = steamPath;
-                steamPathDialog.path.Select(steamPathDialog.path.Text.Length, 0);
-                steamPathDialog.ShowDialog();
+                string path = steamPath + @"\userdata\";
+                string[] dirs = Directory.GetDirectories(path);
+
+                if (dirs.Length == 1)
+                {
+                    steamProfile = "[U:1:" + dirs[0].Remove(0, path.Length) + "]";
+                }
+                else if (dirs.Length != 0)
+                {
+                    List<string> steamProfiles = new List<string>();
+                    foreach (string s in dirs)
+                        steamProfiles.Add(s.Remove(0, path.Length));
+                    SteamProfileSelectorDialog profileSelector = new SteamProfileSelectorDialog();
+                    foreach (string profile in steamProfiles)
+                    {
+                        profileSelector.steamProfiles.Items.Add(SteamDB.GetNickname("[U:1:" + profile + "]"));
+                    }
+                    profileSelector.steamProfiles.SelectedIndex = 0;
+                    if (profileSelector.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        steamProfile = "[U:1:" + steamProfiles[profileSelector.steamProfiles.SelectedIndex] + "]";
+                    }
+                    profileSelector.Dispose();
+                }
             }
-            */
-            
 
             string filePath = @"D:\CODE\VISUAL STUDIO\Projects\SteamGameCategorization\sharedconfig.vdf";
 
@@ -64,11 +83,10 @@ namespace SteamGameCategorization
             string vdfString = file.ReadToEnd();
 
             steamVDF = VDFParser.parse(vdfString);
-
             steamAppVDF = steamVDF.GetKey("UserRoamingConfigStore").GetKey("Software").GetKey("Valve").GetKey("Steam").GetKey("apps");
 
             // Console.WriteLine(steamAppVDF);
-            makeTreeView(steamAppVDF);
+            // makeTreeView(steamAppVDF);
 
             if (File.Exists(Application.StartupPath + "\\GameData.steam"))
             {
@@ -79,15 +97,15 @@ namespace SteamGameCategorization
                 Serialize(apps, "GameData.steam");
             }
 
-            var ownedGames = getOwnedGames("WiseClock");
-            if (ownedGames.ContainsKey("ERROR"))
-            {
-                Console.WriteLine(ownedGames["ERROR"][0]);
-            }
-            else
-            {
-                Console.WriteLine(ownedGames["APP"][0]);
-            }
+            //var ownedGames = getOwnedGames("WiseClock");
+            //if (ownedGames.ContainsKey("ERROR"))
+            //{
+            //    Console.WriteLine(ownedGames["ERROR"][0]);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(ownedGames["APP"][0]);
+            //}
 
             this.Shown += new System.EventHandler(this.fetchSteamDataStart);
         }
@@ -273,48 +291,6 @@ namespace SteamGameCategorization
         private void btnSteamPath_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private Dictionary<string, List<string>> getOwnedGames(string steamID)
-        {
-            Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
-
-            string url = "https://steamdb.info/calculator/?player=" + steamID + "&currency=us";
-            var Webget = new HtmlWeb();
-            var doc = new HtmlAgilityPack.HtmlDocument();
-            try
-            {
-                doc = Webget.Load(url);
-
-                try
-                {
-                    List<string> appIDList = new List<string>();
-                    var appIDs = doc.GetElementbyId("table-apps").SelectNodes("//tbody//tr//td//a");
-                    foreach (var appID in appIDs)
-                    {
-                        appIDList.Add(appID.InnerHtml);
-                    }
-                    result.Add("APP", appIDList);
-                }
-                catch (NullReferenceException)
-                {
-                    try
-                    {
-                        var error = doc.DocumentNode.SelectNodes("//div[contains(@class, 'panel-error-calculator')]//p");
-                        result.Add("ERROR", new List<string> { error[0].InnerHtml });
-                    }
-                    catch (NullReferenceException)
-                    {
-                        result.Add("ERROR", new List<string> { "网络有问题……" });
-                    }
-                }
-            }
-            catch (WebException)
-            {
-                result.Add("ERROR", new List<string> { "网络有问题……" });
-            }
-            
-            return result;
         }
 
     }
