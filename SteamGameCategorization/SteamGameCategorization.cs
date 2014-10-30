@@ -86,7 +86,6 @@ namespace SteamGameCategorization
             steamAppVDF = steamVDF.GetKey("UserRoamingConfigStore").GetKey("Software").GetKey("Valve").GetKey("Steam").GetKey("apps");
 
             // Console.WriteLine(steamAppVDF);
-            // makeTreeView(steamAppVDF);
 
             if (File.Exists(Application.StartupPath + "\\GameData.steam"))
             {
@@ -96,6 +95,8 @@ namespace SteamGameCategorization
             {
                 Serialize(apps, "GameData.steam");
             }
+
+            makeCategoryTree(steamAppVDF);
 
             /*
             Dictionary<string, string> cate = new Dictionary<string, string>();
@@ -293,6 +294,35 @@ namespace SteamGameCategorization
             fetchDataBW.RunWorkerCompleted += new RunWorkerCompletedEventHandler(fetchSteamDataComplete);
             fetchDataBW.RunWorkerAsync();
         }
+
+        private void makeCategoryTree(VDF vdf)
+        {
+            foreach (VDFValues app in ((VDFValues)vdf).Value.Values)
+            {
+                if (app.Value.ContainsKey("tags"))
+                {
+                    foreach (VDFValue tag in ((VDFValues)app.Value["tags"]).Value.Values)
+                    {
+                        if (!categoryTree.Nodes.ContainsKey(tag.Value))
+                        {
+                            categoryTree.Nodes.Add(tag.Value, tag.Value);
+                        }
+                        Console.WriteLine(app.Key);
+                        string appName = apps.ContainsKey(app.Key) && apps[app.Key].success ? apps[app.Key].data.name : app.Key;
+                        categoryTree.Nodes[tag.Value].Nodes.Add(appName);
+                    }
+                }
+                else
+                {
+                    if (!categoryTree.Nodes.ContainsKey("NOCATE"))
+                    {
+                        categoryTree.Nodes.Add("NOCATE", "NO CATE");
+                    }
+                    string appName = apps.ContainsKey(app.Key) && apps[app.Key].success ? apps[app.Key].data.name : app.Key;
+                    categoryTree.Nodes["NOCATE"].Nodes.Add(appName);
+                }
+            }
+        }
         
         private void makeTreeView(VDF vdf)
         {
@@ -329,6 +359,22 @@ namespace SteamGameCategorization
         private void btnSteamPath_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void midiControl_Click(object sender, EventArgs e)
+        {
+            if (midiControl.Text.Equals("■"))
+            {
+                midiControl.Text = "▶";
+                avatarPinkgun.Enabled = false;
+                WiseSoundPlayer.Stop();
+            }
+            else
+            {
+                midiControl.Text = "■";
+                avatarPinkgun.Enabled = true;
+                WiseSoundPlayer.Play(WiseMidiFile.Nyancat, true);
+            }
         }
 
     }
