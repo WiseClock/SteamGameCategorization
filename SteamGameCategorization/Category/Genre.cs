@@ -9,6 +9,14 @@ namespace SteamGameCategorization.Category
 
         private static Dictionary<int, Genre> _genres = new Dictionary<int, Genre>();
 
+        public static Dictionary<int, Genre> Genres
+        {
+            get
+            {
+                return _genres;
+            }
+        }
+
         public static Genre NULL = new Genre(-1, "NULL");
         public static Genre Action = new Genre(1, "Action");
         public static Genre Strategy = new Genre(2, "Strategy");

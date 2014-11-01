@@ -9,6 +9,14 @@ namespace SteamGameCategorization.Category
 
         private static Dictionary<int, Category> _categories = new Dictionary<int, Category>();
 
+        public static Dictionary<int, Category> Categories
+        {
+            get
+            {
+                return _categories;
+            }
+        }
+
         public static Category NULL = new Category(-1, "NULL");
         public static Category MultiPlayer = new Category(1, "Multi-player");
         public static Category SinglePlayer = new Category(2, "Single-player");

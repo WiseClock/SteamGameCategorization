@@ -16,6 +16,7 @@ using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using HtmlAgilityPack;
+using System.Drawing;
 
 namespace SteamGameCategorization
 {
@@ -145,6 +146,32 @@ namespace SteamGameCategorization
             //{
             //    Console.WriteLine(ownedGames["APP"][0]);
             //}
+
+            categoryListView.ContextMenu = categoryListViewMenu;
+
+            foreach (KeyValuePair<int, Category.Category> cate in Category.Category.Categories)
+            {
+                if (cate.Key >= 0)
+                {
+                    ListViewItem item = new ListViewItem(cate.Value.ToString(), categoryListView.Groups["groupCategory"]);
+                    item.UseItemStyleForSubItems = false;
+                    item.SubItems.Add(cate.Key.ToString(), Color.Gray, Color.White, this.Font);
+                    item.SubItems.Add(cate.Value.ToString(), Color.Gray, Color.White, this.Font);
+                    categoryListView.Items.Add(item);
+                }
+            }
+
+            foreach (KeyValuePair<int, Category.Genre> genre in Category.Genre.Genres)
+            {
+                if (genre.Key >= 0)
+                {
+                    ListViewItem item = new ListViewItem(genre.Value.ToString(), categoryListView.Groups["groupGenre"]);
+                    item.UseItemStyleForSubItems = false;
+                    item.SubItems.Add(genre.Key.ToString(), Color.Gray, Color.White, this.Font);
+                    item.SubItems.Add(genre.Value.ToString(), Color.Gray, Color.White, this.Font);
+                    categoryListView.Items.Add(item);
+                }
+            }
 
             this.Shown += new System.EventHandler(this.fetchSteamDataStart);
         }
@@ -374,6 +401,30 @@ namespace SteamGameCategorization
                 midiControl.Text = "■";
                 avatarPinkgun.Enabled = true;
                 WiseSoundPlayer.Play(WiseMidiFile.Nyancat, true);
+            }
+        }
+
+        private void menuEdit_Click(object sender, EventArgs e)
+        {
+            if (categoryListView.SelectedItems.Count > 0)
+            {
+                categoryListView.SelectedItems[0].BeginEdit();
+            }
+        }
+
+        private void menuSelect_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in categoryListView.SelectedItems)
+            {
+                item.Checked = true;
+            }
+        }
+
+        private void menuUnselect_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in categoryListView.SelectedItems)
+            {
+                item.Checked = false;
             }
         }
 
